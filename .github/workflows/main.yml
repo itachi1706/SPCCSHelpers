@@ -17,21 +17,19 @@ jobs:
           dotnet-version: '10.x'
       - name: Setup Mono 
         run: sudo apt install mono-devel
-      - name: Setup NuGet.exe for use with actions
-        # You may pin to the exact commit or the version.
-        # uses: NuGet/setup-nuget@04b0c2b8d1b97922f67eca497d7cf0bf17b8ffe1
-        uses: NuGet/setup-nuget@v3.0.0
+      - name: NuGet login (Trusted Publisher)
+        uses: NuGet/login@v1
+        id: login
         with:
-          nuget-api-key: ${{secrets.NUGET_API_KEY}}
+          user: ${{ secrets.NUGET_USER }}
           
       # TEMP: nuget push SPCCSHelpers.*.nupkg -Source https://api.nuget.org/v3/index.json
       - name: Publish to Nuget API and GitHub Packages
         run: |
           dotnet pack -c Release -o out
           cd out
-          dotnet nuget push SPCCSHelpers.*.nupkg --source https://api.nuget.org/v3/index.json --api-key $NUGET_API_KEY
+          dotnet nuget push SPCCSHelpers.*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{steps.login.outputs.NUGET_API_KEY}}
           dotnet nuget add source --username itachi1706 --password $GITHUB_TOKEN --store-password-in-clear-text --name github "https://nuget.pkg.github.com/itachi1706/index.json"
           dotnet nuget push SPCCSHelpers.*.nupkg  --api-key $GITHUB_TOKEN --source "github"
         env:
-          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
