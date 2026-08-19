@@ -22,6 +22,11 @@ jobs:
         id: login
         with:
           user: ${{ secrets.NUGET_USER }}
+
+      - name: Setup NuGet.exe for use with actions
+        uses: NuGet/setup-nuget@v2.0.1
+        with:
+         nuget-api-key: ${{steps.login.outputs.NUGET_API_KEY}}
           
       # TEMP: nuget push SPCCSHelpers.*.nupkg -Source https://api.nuget.org/v3/index.json
       - name: Publish to Nuget API and GitHub Packages
