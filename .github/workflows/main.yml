@@ -8,6 +8,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write   # NuGet Trusted Publisher (OIDC) login
+      contents: read    # checkout
+      packages: write   # push to GitHub Packages
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
