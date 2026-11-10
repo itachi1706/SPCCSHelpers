@@ -11,22 +11,22 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Set up JDK 17
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@v6
         with:
           java-version: 17
           distribution: 'temurin'
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
       - name: Cache SonarCloud packages
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ~\sonar\cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
       - name: Cache SonarCloud scanner
         id: cache-sonar-scanner
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: .\.sonar\scanner
           key: ${{ runner.os }}-sonar-scanner
@@ -37,13 +37,21 @@ jobs:
         run: |
           New-Item -Path .\.sonar\scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
+      - name: Extract Versions from .csproj
+        shell: pwsh
+        run: |
+          [xml]$csproj = Get-Content "SPCCSHelpers/SPCCSHelpers.csproj"
+          $version = $csproj.Project.PropertyGroup.PackageVersion
+          if (-not $version) { $version = $csproj.Project.PropertyGroup.Version }
+          if (-not $version) { $version = "1.0.0" }
+          echo "PKG_VERSION=$version" >> $env:GITHUB_ENV
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"itachi1706_SPCCSHelpers" /o:"itachi1706" /d:sonar.token="$env:SONAR_TOKEN" /d:sonar.cs.opencover.reportsPaths=coverage.xml
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"itachi1706_SPCCSHelpers" /v:"${{ env.PKG_VERSION }}" /o:"itachi1706" /d:sonar.token="$env:SONAR_TOKEN" /d:sonar.cs.opencover.reportsPaths=coverage.xml
           dotnet build
           dotnet test --no-build --collect:"XPlat Code Coverage;Format=cobertura,opencover" --verbosity normal
            mv SPCCSHelpers.Tests/TestResults/*/coverage.opencover.xml coverage.xml

@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v3.2.5] - 2026-11-10
+### :wrench: Chores
+- [`6b42f08`](https://github.com/itachi1706/SPCCSHelpers/commit/6b42f080c0bd4203235ba30435e40593417d18b0) - **deps**: Bump actions/checkout from 6 to 7 *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`7e41371`](https://github.com/itachi1706/SPCCSHelpers/commit/7e413715d1f069fcc021aa02010ee42281d26e12) - bump dependencies *(commit by [@xiaopang254](https://github.com/xiaopang254))*
+
+
 ## [v3.2.4] - 2026-04-08
 ### :bug: Bug Fixes
 - [`b165e64`](https://github.com/itachi1706/SPCCSHelpers/commit/b165e64b0e67ed36b5b086b5044a92e59dde5f08) - We should just disable it from enqueuing in the first place *(commit by [@itachi1706](https://github.com/itachi1706))*
@@ -175,3 +181,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v3.2.2]: https://github.com/itachi1706/SPCCSHelpers/compare/v3.2.1...v3.2.2
 [v3.2.3]: https://github.com/itachi1706/SPCCSHelpers/compare/v3.2.2...v3.2.3
 [v3.2.4]: https://github.com/itachi1706/SPCCSHelpers/compare/v3.2.3...v3.2.4
+[v3.2.5]: https://github.com/itachi1706/SPCCSHelpers/compare/v3.2.4...v3.2.5
