@@ -27,7 +27,7 @@ secure random generation, and common exceptions so service code can stay focused
 ### Install from NuGet
 
 ```bash
-dotnet add package SPCCSHelpers --version 3.2.4
+dotnet add package SPCCSHelpers --version 3.2.5
 ```
 
 ### Reference from Source
